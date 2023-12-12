@@ -159,6 +159,8 @@ pub enum RunEvent<T: UserEvent> {
   Opened { urls: Vec<url::Url> },
   /// A custom event defined by the user.
   UserEvent(T),
+
+  ApplicationShouldTerminate,
 }
 
 /// Action to take when the event loop is about to exit

@@ -6,8 +6,17 @@
 
 fn main() {
   tauri::Builder::default()
-    .run(tauri::generate_context!(
+    .build(tauri::generate_context!(
       "../../examples/helloworld/tauri.conf.json"
     ))
-    .expect("error while running tauri application");
+    .expect("error while running tauri application")
+    .run(|_app_handle, event| {
+      // dbg!(&event);
+      match event {
+        tauri::RunEvent::ApplicationShouldTerminate { .. } => {
+          dbg!("RunEvent::ApplicationShouldTerminate");
+        }
+        _ => (),
+      }
+    });
 }

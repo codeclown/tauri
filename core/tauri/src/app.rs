@@ -206,6 +206,9 @@ pub enum RunEvent {
   #[cfg(all(desktop, feature = "tray-icon"))]
   #[cfg_attr(docsrs, doc(cfg(all(desktop, feature = "tray-icon"))))]
   TrayIconEvent(crate::tray::TrayIconEvent),
+
+  #[cfg(any(target_os = "macos"))]
+  ApplicationShouldTerminate,
 }
 
 impl From<EventLoopMessage> for RunEvent {
@@ -1830,6 +1833,8 @@ fn on_event_loop_event<R: Runtime, F: FnMut(&AppHandle<R>, RunEvent) + 'static>(
     }
     #[cfg(any(target_os = "macos", target_os = "ios"))]
     RuntimeRunEvent::Opened { urls } => RunEvent::Opened { urls },
+    #[cfg(any(target_os = "macos"))]
+    RuntimeRunEvent::ApplicationShouldTerminate => RunEvent::ApplicationShouldTerminate,
     _ => unimplemented!(),
   };
 
